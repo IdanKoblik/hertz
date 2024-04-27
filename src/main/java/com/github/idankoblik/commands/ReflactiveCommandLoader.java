@@ -49,11 +49,10 @@ public class ReflactiveCommandLoader {
             return;
         }
 
-        System.out.println("Roles not null");
-        if (Arrays.stream(requiredRoles).anyMatch(roleID -> hasRole(member, roleID))) {
-            System.out.println("Test: " + event.getName());
+        if (Arrays.stream(requiredRoles).anyMatch(roleID -> hasRole(member, roleID)))
             command.execute(event);
-        }
+        else
+            event.reply("You dont have the required role to use this command").setEphemeral(true).queue();
     }
 
     public void handleAutoComplete(CommandAutoCompleteInteractionEvent event) {
