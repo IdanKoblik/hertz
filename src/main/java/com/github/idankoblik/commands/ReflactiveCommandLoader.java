@@ -34,19 +34,19 @@ public class ReflactiveCommandLoader {
     }
 
     public void handleCommands(SlashCommandInteractionEvent event) {
-        Command command = commands.get(event.getName().toLowerCase());
-        if (command == null) return;
-
-        long[] requiredRoles = getRequiredRoles(packageName);
-        if (requiredRoles == null)
-            return;
-
-        if (requiredRoles.length == 0)
-            return;
-
         Member member = event.getMember();
         if (member == null)
             return;
+
+        Command command = commands.get(event.getName().toLowerCase());
+        if (command == null)
+            return;
+
+        long[] requiredRoles = getRequiredRoles(packageName);
+        if (requiredRoles == null) {
+            command.execute(event);
+            return;
+        }
 
         if (Arrays.stream(requiredRoles).anyMatch(roleID -> hasRole(member, roleID)))
             command.execute(event);
