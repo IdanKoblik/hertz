@@ -42,7 +42,7 @@ public class ReflactiveCommandLoader {
         if (command == null)
             return;
 
-        long[] requiredRoles = getRequiredRoles(packageName);
+        long[] requiredRoles = getRequiredRoles(command);
         if (requiredRoles == null) {
             command.execute(event);
             return;
@@ -84,8 +84,8 @@ public class ReflactiveCommandLoader {
                 .anyMatch(role -> role.getIdLong() == id);
     }
 
-    private long[] getRequiredRoles(String packageName) {
-        Optional<RequiredRoles> requiredRolesOptional = instantiator.getAnnotation(packageName, RequiredRoles.class);
+    private long[] getRequiredRoles(Command command) {
+        Optional<RequiredRoles> requiredRolesOptional = Optional.ofNullable(command.getClass().getAnnotation(RequiredRoles.class));
         return requiredRolesOptional.map(RequiredRoles::ids).orElse(null);
     }
 }
