@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public class DynamicInstantiator {
 
     public <T> void registerClasses(String packageName, Class<T> baseClass, Consumer<T> action) {

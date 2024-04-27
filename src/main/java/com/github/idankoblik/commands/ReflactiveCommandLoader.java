@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import java.util.*;
 import java.util.stream.Stream;
 
+@SuppressWarnings("unused")
 public class ReflactiveCommandLoader {
 
     private final Map<String, Command> commands = new HashMap<>();
@@ -48,8 +49,11 @@ public class ReflactiveCommandLoader {
             return;
         }
 
-        if (Arrays.stream(requiredRoles).anyMatch(roleID -> hasRole(member, roleID)))
+        System.out.println("Roles not null");
+        if (Arrays.stream(requiredRoles).anyMatch(roleID -> hasRole(member, roleID))) {
+            System.out.println("Test: " + event.getName());
             command.execute(event);
+        }
     }
 
     public void handleAutoComplete(CommandAutoCompleteInteractionEvent event) {
