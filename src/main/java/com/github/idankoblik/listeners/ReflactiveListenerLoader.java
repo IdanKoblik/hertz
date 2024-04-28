@@ -16,7 +16,7 @@ public class ReflactiveListenerLoader {
         this.builder = builder;
     }
 
-    private void registerListener(String packageName) {
+    public void registerListener(String packageName) {
         for (ClassPath.ClassInfo classInfo : instantiator.getClassInfos(packageName)) {
             try {
                 Class<?> clazz = Class.forName(classInfo.getName(), true, instantiator.getLoader());
