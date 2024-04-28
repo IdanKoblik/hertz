@@ -11,7 +11,11 @@ import java.util.function.Consumer;
 public class DynamicInstantiator {
 
     @Getter
-    private final ClassLoader loader = getClass().getClassLoader();
+    private final ClassLoader loader;
+
+    public DynamicInstantiator() {
+        this.loader = getClass().getClassLoader();
+    }
 
     public <T> void registerClasses(String packageName, Class<T> baseClass, Consumer<T> action) {
         for (ClassPath.ClassInfo classInfo : getClassInfos(packageName)) {
