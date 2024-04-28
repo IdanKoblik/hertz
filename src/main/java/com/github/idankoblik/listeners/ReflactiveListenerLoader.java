@@ -1,24 +1,31 @@
 package com.github.idankoblik.listeners;
 
 import com.github.idankoblik.DynamicInstantiator;
-import net.dv8tion.jda.api.JDA;
+import com.google.common.reflect.ClassPath;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+@SuppressWarnings("unused")
 public class ReflactiveListenerLoader {
 
-    public ReflactiveListenerLoader(JDA jda, String packageName) {
-        DynamicInstantiator instantiator = new DynamicInstantiator();
-        instantiator.processAnnotatedClasses(packageName, Listener.class, listener -> addCommand(listener, jda));
+    private final DynamicInstantiator instantiator;
+    private final JDABuilder builder;
+
+    public ReflactiveListenerLoader(JDABuilder builder) {
+        this.instantiator = new DynamicInstantiator();
+        this.builder = builder;
     }
 
-    private void addCommand(Class<?> listener, JDA jda) {
-        Object instance;
-        try {
-            instance = listener.getDeclaredConstructors()[0].newInstance();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
+    private void registerListener(String packageName) {
+        for (ClassPath.ClassInfo classInfo : instantiator.getClassInfos(packageName)) {
+            try {
+                Class<?> clazz = Class.forName(classInfo.getName(), true, instantiator.getLoader());
+                if (ListenerAdapter.class.isAssignableFrom(clazz))
+                    builder.addEventListeners(clazz.getDeclaredConstructor().newInstance());
+            } catch (Throwable e) {
+                e.getStackTrace();
+            }
         }
-
-        jda.addEventListener(instance);
     }
 
 }
