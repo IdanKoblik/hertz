@@ -3,7 +3,6 @@ package com.github.idankoblik;
 import com.google.common.reflect.ClassPath;
 
 import java.lang.annotation.Annotation;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
@@ -30,7 +29,7 @@ public class DynamicInstantiator {
         }
     }
 
-    public <T extends Annotation> Optional<T> getAnnotation(String packageName, Class<T> annotation) {
+    public <T extends Annotation> void processAnnotatedClasses(String packageName, Class<T> annotationClass, Consumer<Class<?>> action) {
         ClassLoader classLoader = getClass().getClassLoader();
 
         ClassPath classPath;
@@ -43,13 +42,13 @@ public class DynamicInstantiator {
         for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(packageName)) {
             try {
                 Class<?> clazz = Class.forName(classInfo.getName(), true, classLoader);
-                if (clazz.isAnnotationPresent(annotation))
-                    return Optional.ofNullable(clazz.getAnnotation(annotation));
+                if (clazz.isAnnotationPresent(annotationClass)) {
+                    action.accept(clazz);
+                }
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
         }
-
-        return Optional.empty();
     }
+
 }
