@@ -38,7 +38,7 @@ jobs:
           tree
       - name: copy to docs
         working-directory: build/docs/javadoc/
-        run: cp . ~/docs/
+        run: cp -r . ~/docs/
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
