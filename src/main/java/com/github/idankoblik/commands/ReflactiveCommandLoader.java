@@ -12,6 +12,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * Auto registers JDA slash commands
+ */
 @SuppressWarnings("unused")
 public class ReflactiveCommandLoader {
 
@@ -21,6 +24,14 @@ public class ReflactiveCommandLoader {
 
     private final DynamicInstantiator instantiator;
 
+    /**
+     * Constructs a ReflactiveCommandLoader for handling dynamic commands.
+     *
+     * @param jda         The JDA instance.
+     * @param guildId     The ID of the guild.
+     * @param packageName The name of the package containing command classes.
+     * @throws GuildNotFoundException If the specified guild ID does not exist.
+     */
     public ReflactiveCommandLoader(JDA jda, long guildId, String packageName) {
         this.packageName = packageName;
 
@@ -34,6 +45,11 @@ public class ReflactiveCommandLoader {
         guild.updateCommands().addCommands(commands.values().stream().map(Command::commandData).toList()).queue();
     }
 
+    /**
+     * Handles slash command interactions.
+     *
+     * @param event The SlashCommandInteractionEvent.
+     */
     public void handleCommands(SlashCommandInteractionEvent event) {
         Member member = event.getMember();
         if (member == null)
@@ -52,9 +68,14 @@ public class ReflactiveCommandLoader {
         if (Arrays.stream(requiredRoles).anyMatch(roleID -> hasRole(member, roleID)))
             command.execute(event);
         else
-            event.reply("You dont have the required role to use this command").setEphemeral(true).queue();
+            event.reply("You don't have the required role to use this command").setEphemeral(true).queue();
     }
 
+    /**
+     * Handles auto-completion interactions for commands.
+     *
+     * @param event The CommandAutoCompleteInteractionEvent.
+     */
     public void handleAutoComplete(CommandAutoCompleteInteractionEvent event) {
         Command command = commands.get(event.getName().toLowerCase());
         if (command == null)

@@ -1,0 +1,49 @@
+name: Javadoc deploy
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  environment:
+    name: github-pages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      pages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: create javadoc
+        run: ./gradlew javadoc
+      - name: Create temp directory
+        shell: sh
+        run: |
+          mkdir docs
+          tree
+          cp -r build/docs/javadoc/. docs/
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload our temp directory
+          path: 'docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
