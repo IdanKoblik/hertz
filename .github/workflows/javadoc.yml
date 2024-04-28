@@ -35,7 +35,7 @@ jobs:
         shell: sh
         run: |
           mkdir docs
-          ls
+          echo build:
           ls build
           cp -a /build/docs/javadoc/* /docs
       - name: Setup Pages
