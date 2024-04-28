@@ -2,7 +2,6 @@ package com.github.idankoblik;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
-import lombok.Getter;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -10,7 +9,6 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public class DynamicInstantiator {
 
-    @Getter
     private final ClassLoader loader;
 
     public DynamicInstantiator() {
@@ -38,6 +36,10 @@ public class DynamicInstantiator {
         }
 
         return classPath.getTopLevelClassesRecursive(packageName);
+    }
+
+    public ClassLoader getLoader() {
+        return loader;
     }
 
 }
