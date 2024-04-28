@@ -2,18 +2,18 @@ package com.github.idankoblik.listeners;
 
 import com.github.idankoblik.DynamicInstantiator;
 import com.google.common.reflect.ClassPath;
-import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 @SuppressWarnings("unused")
 public class ReflactiveListenerLoader {
 
     private final DynamicInstantiator instantiator;
-    private final JDABuilder builder;
+    private final JDA jda;
 
-    public ReflactiveListenerLoader(JDABuilder builder) {
+    public ReflactiveListenerLoader(JDA jda) {
         this.instantiator = new DynamicInstantiator();
-        this.builder = builder;
+        this.jda = jda;
     }
 
     public void registerListener(String packageName) {
@@ -21,7 +21,7 @@ public class ReflactiveListenerLoader {
             try {
                 Class<?> clazz = Class.forName(classInfo.getName(), true, instantiator.getLoader());
                 if (ListenerAdapter.class.isAssignableFrom(clazz))
-                    builder.addEventListeners(clazz.getDeclaredConstructor().newInstance());
+                    jda.addEventListener(clazz.getDeclaredConstructor().newInstance());
             } catch (Throwable e) {
                 e.getStackTrace();
             }
