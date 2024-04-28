@@ -37,7 +37,7 @@ publishing {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:${project.findProperty("jda.version").toString()}")
-    compileOnly("org.projectlombok:lombok:${project.findProperty("lombok.version").toString()}")
-    implementation("com.google.guava:guava:${project.findProperty("guava.version").toString()}")
+    implementation("net.dv8tion:JDA:5.0.0-beta.23")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    implementation("com.google.guava:guava:33.1.0-jre")
 }
