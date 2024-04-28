@@ -23,13 +23,13 @@ publishing {
         }
     }
     repositories {
-        if (project.findProperty("beta.nexus.username") != null) {
+        if (project.findProperty("apartium.nexus.username") != null) {
             maven {
                 name = "BetaReleases"
                 url = uri("https://nexus.voigon.dev/repository/beta-releases/")
                 credentials {
-                    username = project.findProperty("beta.nexus.username").toString()
-                    password = project.findProperty("beta.nexus.password").toString()
+                    username = project.findProperty("apartium.nexus.username").toString()
+                    password = project.findProperty("apartium.nexus.password").toString()
                 }
             }
         }
@@ -37,7 +37,7 @@ publishing {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.0-beta.23")
-    compileOnly("org.projectlombok:lombok:1.18.32")
-    implementation("com.google.guava:guava:33.1.0-jre")
+    implementation("net.dv8tion:JDA:${ project.findProperty("jda.version") }")
+    compileOnly("org.projectlombok:${ project.findProperty("lombok.version") }")
+    implementation("com.google.guava:guava:${ project.findProperty("guava.version") }")
 }
