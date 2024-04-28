@@ -5,8 +5,7 @@ plugins {
 }
 
 group = "com.github.idankoblik"
-version = "1.2.2"
-
+version = "1.2.7"
 
 repositories {
     mavenCentral()
